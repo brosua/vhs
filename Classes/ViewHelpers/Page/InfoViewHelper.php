@@ -9,11 +9,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use FluidTYPO3\Vhs\Utility\ErrorUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 
 /**
  * ViewHelper to access data of the current page record.
@@ -61,17 +60,13 @@ class InfoViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE']->sys_page instanceof PageRepository) {
-            ErrorUtility::throwViewHelperException(
-                sprintf('ViewHelper %s does not work in backend context without a simulated frontend.', static::class),
-                1489931508
-            );
-        }
+        $pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRepository::class );
+
         $pageUid = (integer) $arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $page = $GLOBALS['TSFE']->sys_page->getPage_noCheck($pageUid);
+        $page = $pageRepository->getPage_noCheck($pageUid);
         $field = $arguments['field'];
         $content = null;
         if (true === empty($field)) {

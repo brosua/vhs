@@ -225,7 +225,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($this->arguments['pageType'])
             ->setNoCache($this->arguments['noCache'])
-            ->setUseCacheHash(!$this->arguments['noCacheHash'])
+//            ->setUseCacheHash(!$this->arguments['noCacheHash'])
             ->setSection($this->arguments['section'])
             ->setArguments($additionalParameters)
             ->setCreateAbsoluteUri($this->arguments['absolute'])
